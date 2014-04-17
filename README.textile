@@ -1,5 +1,9 @@
 h1. renum
 
+quick fix to make to make Renum work with rails 4.1, changes `:enum to :renum`
+and does not include the module in global space or Module.
+
+
 !https://secure.travis-ci.org/duelinmarkers/renum.png(Build Status)!:http://travis-ci.org/duelinmarkers/renum
 
 Renum provides a readable but terse enum facility for Ruby.  Enums are sometimes called object constants and are analogous to the type-safe enum pattern in Java, though obviously Ruby's flexibility means there's no such thing as type-safety.
@@ -8,9 +12,12 @@ h2. Usage
 
 Renum allows you to do things like this:
 
-<pre syntax="ruby">enum :Status, %w( NOT_STARTED IN_PROGRESS COMPLETE )
+<pre syntax="ruby">
+include Renum
 
-enum :Size do
+renum :Status, %w( NOT_STARTED IN_PROGRESS COMPLETE )
+
+renum :Size do
   Small("Really really tiny")
   Medium("Sort of in the middle")
   Large("Quite big")
@@ -23,7 +30,7 @@ enum :Size do
 end
 
 module MyNamespace
-  enum :FooValue, [ :Bar, :Baz, :Bat ]
+  renum :FooValue, [ :Bar, :Baz, :Bat ]
 end</pre>
 
 Giving you something that satisfies this spec, plus a bit more:
@@ -79,7 +86,7 @@ h2. "Rails":http://www.rubyonrails.com/ Integration
 Use Renum::NameSerializer with ActiveRecord's "`serialize`":http://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Serialization/ClassMethods.html#method-i-serialize method to store enum values as strings.
 
 <pre syntax="ruby">class Vehicle < ActiveRecord::Base
-  enum :Status do
+  renum :Status do
     New()
     Used()
     Salvage(true)
@@ -113,7 +120,7 @@ v.status.requires_warning_buyer?          # => raises NoMethodError</pre>
 Before ActiveRecord had such flexible serialization support, I wrote a Rails plugin called "constantize_attribute":https://github.com/duelinmarkers/constantize_attribute/tree that would store the fully qualified name of your value in a string column. It hasn't been tested against a recent version of Rails, but it should still work. It's not packaged as a gem, so if you want to use it, I'd recommend you just grab the code. (It's quite tiny.)
 
 <pre syntax="ruby">class Vehicle < ActiveRecord::Base
-  enum :Status do
+  renum :Status do
     New()
     Used()
     Salvage(true)

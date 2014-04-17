@@ -14,14 +14,8 @@ module Renum
   # @param [optional, Array<Symbol, String>] values
   #   the names of the values in order, can be omitted if you'll specify them via method calls in a block
   # @param block can be used to specify values with method calls, instance methods
-  def enum type_name, values = :defined_in_block, &block
+  def renum type_name, values = :defined_in_block, &block
     nest = self.is_a?(Module) ? self : Object
     EnumeratedValueTypeFactory.create(nest, type_name, values, &block)
   end
-end
-
-extend Renum
-
-Module.module_eval do
-  include Renum
 end

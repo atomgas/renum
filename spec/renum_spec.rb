@@ -1,6 +1,8 @@
 require 'spec_helper'
 
-enum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]
+extend Renum
+
+renum :Status, [ :NOT_STARTED, :IN_PROGRESS, :COMPLETE ]
 
 describe "basic enum" do
 
@@ -50,7 +52,8 @@ describe "basic enum" do
 end
 
 module MyNamespace
-  enum :FooValue, %w( Bar Baz Bat )
+  extend Renum
+  renum :FooValue, %w( Bar Baz Bat )
 end
 
 describe "nested enum" do
@@ -59,7 +62,7 @@ describe "nested enum" do
   end
 end
 
-enum :Color, [ :RED, :GREEN, :BLUE ] do
+renum :Color, [ :RED, :GREEN, :BLUE ] do
   def abbr
     name[0..0]
   end
@@ -71,7 +74,7 @@ describe "enum with a block" do
   end
 end
 
-enum :Size do
+renum :Size do
   Small("Really really tiny")
   Medium("Sort of in the middle")
   Large("Quite big")
@@ -84,7 +87,7 @@ enum :Size do
   end
 end
 
-enum :HairColor do
+renum :HairColor do
   BLONDE()
   BRUNETTE()
   RED()
@@ -112,7 +115,7 @@ describe "enum with no values array and values declared in the block" do
   end
 end
 
-enum :Rating do
+renum :Rating do
   NotRated()
 
   ThumbsDown do
